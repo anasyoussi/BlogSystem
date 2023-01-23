@@ -1,0 +1,10 @@
+.inlineBtn{
+    display: inline-flex !important; 
+} 
+.inlineBtn button{
+    margin-left: 10px;
+}
+
+.bootstrap-select .bs-searchbox .form-control,
+.bootstrap-select .bs-actionsbox .form-control,
+.bootstrap-select .bs-donebutton .form-control {padding-left : 30px}
