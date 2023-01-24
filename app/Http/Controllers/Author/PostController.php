@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Author;
 
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
@@ -21,11 +21,9 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    { 
-        $posts      = Post::latest()->get();
-        $categories = Category::latest()->get(); 
-        $tags       = Tag::latest()->get(); 
-        return response()->view('admin.post.index', compact('posts', 'categories', 'tags')); 
+    {
+        $posts = Auth::user()->posts()->latest()->get();  
+        return response()->view('author.post.index', compact('posts')); 
     }
 
     /**
@@ -34,10 +32,10 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {  
+    {
         $categories = Category::latest()->get(); 
         $tags       = Tag::latest()->get(); 
-        return response()->view('admin.post.create', compact('categories', 'tags')); 
+        return response()->view('author.post.create', compact('categories', 'tags')); 
     }
 
     /**
@@ -48,7 +46,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->categories, $request->tags); 
         $this->validate($request, [
             'title'         => 'required',
             'image'         => 'required',
@@ -85,13 +82,13 @@ class PostController extends Controller
         }else{
             $post->status = false;  
         }
-        $post->is_approved = true;
+        $post->is_approved = false;
         $post->save();
         
         $post->tags()->attach($request->tags); 
         $post->categories()->attach($request->categories); 
         
-        return redirect()->route('admin.post.index')->with('success', 'Post has been saved successfully!');   
+        return redirect()->route('author.post.index')->with('success', 'Post has been saved successfully!');   
     }
 
     /**
@@ -101,8 +98,12 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Post $post)
-    { 
-        return view('admin.post.show', compact('post')); 
+    {
+        if(!Auth::user() || Auth::user()->id != $post->user_id){
+            abort(403);
+        } else {
+            return view('author.post.show', compact('post'));
+        }
     }
 
     /**
@@ -113,9 +114,14 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        $categories = Category::latest()->get();
-        $tags = Tag::latest()->get();
-        return response()->view('admin.post.edit', compact('post', 'categories', 'tags')); 
+        if(!Auth::user() || Auth::user()->id != $post->user_id){
+            abort(403);
+        }else{
+            $categories = Category::latest()->get();
+            $tags = Tag::latest()->get();
+            return response()->view('author.post.edit', compact('post', 'categories', 'tags')); 
+        }
+        
     }
 
     /**
@@ -175,13 +181,13 @@ class PostController extends Controller
             $post->status = false;  
         }
 
-        $post->is_approved = true;
+        $post->is_approved = false;
         $post->save();
         
         $post->tags()->sync($request->tags); 
         $post->categories()->sync($request->categories); 
         
-        return redirect()->route('admin.post.index')->with('success', 'Post has been updated successfully!'); 
+        return redirect()->route('author.post.index')->with('success', 'Post has been updated successfully!');   
     }
 
     /**
@@ -193,35 +199,22 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::find($id); 
+        if ($post->user_id != Auth::id())
+        {
+            exit();
+            return redirect()->back()->with('error', 'You are not authorized to access this post');   
+        }
+
         if (Storage::disk('public')->exists('post/'.$post->image))
         {
             Storage::disk('public')->delete('post/'.$post->image);
         }
         
-        $post->categories->detach();
-        $post->tags->detach(); 
+        $post->categories()->detach();
+        $post->tags()->detach(); 
 
         $post->delete();
-        return redirect()->route('admin.post.index')->with('success', 'Post has been Deleted Successfully!');   
-    }
-    
-    public function pending()
-    {
-        $posts = Post::where('is_approved', false)->get();
-        return view('admin.post.pending', compact('posts'));
-    }
 
-    public function approval($id)
-    {
-        $post = Post::find($id); 
-        if($post->is_approved == false){
-            $post->is_approved = true; 
-            $post->save(); 
-            return redirect()->route('admin.post.index')->with('success', 'Post has been Approved Successfully!');   
-        }else {
-            return redirect()->route('admin.post.index')->with('info', 'Already Approved! ');   
-        }
-        return redirect()->back(); 
+        return redirect()->route('author.post.index')->with('success', 'Post has been Deleted Successfully!');   
     }
-    
 }

@@ -10,13 +10,13 @@
 <section class="content">
     <div class="container-fluid">
         <!-- Vertical Layout | With Floating Label -->
-        <a href="{{ route('admin.post.index') }}" class="btn btn-danger waves-effect">BACK</a>
+        <a href="{{ route('author.post.index') }}" class="btn btn-danger waves-effect">BACK</a>
         @if($post->is_approved == false)
             <button type="button" class="btn btn-success waves-effect pull-right" onclick="approvePost({{ $post->id }})">
                 <i class="material-icons">done</i>
                 <span>Approve</span>
             </button>
-            <form method="post" action="{{ route('admin.post.approve',$post->id) }}" id="approval-form" style="display: none">
+            <form method="post" action="{{ route('author.post.approve',$post->id) }}" id="approval-form" style="display: none">
                 @csrf
                 @method('PUT')
             </form>
@@ -93,7 +93,7 @@
         function approvePost(id) {
             swal({
                 title: 'Are you sure?',
-                text: "You want to approve this post ",
+                text: "You went to approve this post ",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

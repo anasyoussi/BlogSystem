@@ -35,13 +35,18 @@ Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', '
     Route::resource('tag', TagController::class);
     Route::resource('category', CategoryController::class);
     Route::resource('post', PostController::class);
+
     // Post : Pending & approve posts.
     Route::get('/pending/post', [PostController::class, 'pending'])->name('post.pending');
-    Route::put('/post/{id}/approve',[PostController::class, 'approve'])->name('post.approve');  
+    Route::put('/post/{id}/approve',[PostController::class, 'approval'])->name('post.approve');  
 });
 
 
 // Author Dashboard
-Route::group(['prefix' => 'author', 'namespace' => 'Author' , 'as'=>'author.', 'middleware'=>['auth', 'author'] ], function () {
+Route::group(['prefix' => 'author', 'as'=>'author.', 'middleware'=>['auth', 'author'] ], function () {
     Route::get('dashboard', [AuthorDashboardController::class, 'index'])->name('dashboard'); 
+    Route::resource('post', App\Http\Controllers\Author\PostController::class);
+    // Post : Pending & approve posts.
+    Route::get('/pending/post', [App\Http\Controllers\Author\PostController::class, 'pending'])->name('post.pending');
+    Route::put('/post/{id}/approve',[App\Http\Controllers\Author\PostController::class, 'approve'])->name('post.approve');  
 });

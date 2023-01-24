@@ -1,6 +1,6 @@
 @extends('layouts.backend.app') 
 @section('title', 'Posts List')
-
+ 
 @push('css')
     <link href="{{ asset('assets/backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
 @endpush
@@ -9,7 +9,7 @@
 <section class="content">
     <div class="container-fluid">
         <div class="block-header">
-            <a href="{{ route('admin.post.create') }}" class="btn btn-primary waves-effect" >
+            <a href="{{ route('author.post.create') }}" class="btn btn-primary waves-effect" >
                 <i class="material-icons">add</i><span>Add new Post</span>
             </a>
         </div>
@@ -80,21 +80,21 @@
                                             <td>{{ $post->updated_at->diffForHumans() }}</td> 
                                             <td class="text-center">
                                                  
-                                                <a href="{{ route('admin.post.show', $post) }}" class="btn btn-success   waves-effect">
+                                                <a href="{{ route('author.post.show', $post) }}" class="btn btn-success waves-effect">
                                                     <i class="material-icons">visibility</i>
                                                 </a>  
 
-                                                <a href="{{ route('admin.post.edit', $post) }}" class="btn btn-primary  waves-effect">
+                                                <a href="{{ route('author.post.edit', $post) }}" class="btn btn-primary waves-effect">
                                                     <i class="material-icons">edit</i>
                                                 </a>  
 
-                                                <button class="btn btn-danger waves-effect  " type="button"
+                                                <button class="btn btn-danger waves-effect" type="button"
                                                     onclick="deletePost({{ $post->id }})"
                                                 >
                                                     <i class="material-icons">delete</i>
                                                 </button>
 
-                                                <form id="delete-form-{{ $post->id }}" method="post" action="{{ route('admin.post.destroy', $post) }}" style="display: none;">
+                                                <form id="delete-form-{{ $post->id }}" method="post" action="{{ route('author.post.destroy', $post) }}" style="display: none;">
                                                     @csrf 
                                                     @method('delete')
                                                 </form>
