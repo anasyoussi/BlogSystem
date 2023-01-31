@@ -1,7 +1,6 @@
 @extends('layouts.frontend.app')
 
-@section('title')@endsection
-
+@section('title',  $post->title)  
 
 @push('css') 
     <!-- Stylesheets --> 
@@ -9,17 +8,31 @@
     <link href="{{ asset('assets/common-css/ionicons.css') }}" rel="stylesheet"> 
     <link href="{{ asset('assets/single-post-1/css/styles.css') }}" rel="stylesheet"> 
     <link href="{{ asset('assets/single-post-1/css/responsive.css') }}" rel="stylesheet">
-@endpush 
+     <!-- jQuery Toast  -->
+    <link rel="stylesheet" href="{{ asset('plugins/css/jquery.toast.min.css') }}">
+    <style>
+        .favorite_posts{
+            color: blueviolet;
+        }
+        .header-bg{
+            height: 400px;
+            width: 100%;
+            background-size: cover;
+            background-image: url('{{ Storage::disk("public")->url("category/" . $postCatImg) }}');
+        }
+    </style>
+@endpush  
 
-@section('content') 
-<div class="slider">
-    <div class="display-table  center-text">
-        <h1 class="title display-table-cell"><b>DESIGN</b></h1>
+@section('content')  
+
+<div class="slider header-bg">
+    <div class="display-table center-text">
+        <h1 class="title display-table-cell"><b>{{ $postCatName }}</b></h1>
     </div>
-</div><!-- slider -->
+</div> 
 
 <section class="post-area section">
-    <div class="container">
+    <div class="container"> 
 
         <div class="row">
 
@@ -32,37 +45,32 @@
                         <div class="post-info">
 
                             <div class="left-area">
-                                <a class="avatar" href="#"><img src="images/avatar-1-120x120.jpg" alt="Profile Image"></a>
+                                <a class="avatar" href="#"><img src="{{ Storage::disk('public')->url('profile/'. $post->user->image) }}" alt="Profile Image"></a>
                             </div>
 
                             <div class="middle-area">
-                                <a class="name" href="#"><b>Katy Liu</b></a>
-                                <h6 class="date">on Sep 29, 2017 at 9:48 am</h6>
+                                <a class="name" href="#"><b>{{ $post->user->name }}</b></a>
+                                <h6 class="date">{{ $post->created_at->diffForHumans() }}</h6>
                             </div>
 
                         </div><!-- post-info -->
 
                         <h3 class="title"><a href="#"><b>How Did Van Gogh's Turbulent Mind Depict One of the Most Complex Concepts in Physics?</b></a></h3>
 
-                        <p class="para">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                        <!-- <p class="para">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
                         dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
                         ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
                         nulla pariatur. Excepteur sint
-                        occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+                        occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p> -->
 
-                        <div class="post-image"><img src="images/blog-1-1000x600.jpg" alt="Blog Image"></div>
+                        <div class="post-image"><img src="{{ Storage::disk('public')->url('post/'.$post->image) }}" alt="Blog Image"></div>
 
-                        <p class="para">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                        ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                        nulla pariatur. Excepteur sint
-                        occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+                        <p class="para">{!! html_entity_decode($post->body) !!}</p>
 
-                        <ul class="tags">
-                            <li><a href="#">Mnual</a></li>
-                            <li><a href="#">Liberty</a></li>
-                            <li><a href="#">Recommendation</a></li>
-                            <li><a href="#">Inspiration</a></li>
+                        <ul class="tags"> 
+                            @foreach($postTags as $tag) 
+                                <li><a href="#">{{ $tag->name }}</a></li>
+                            @endforeach
                         </ul>
                     </div><!-- blog-post-inner -->
 
@@ -70,7 +78,7 @@
                         <ul class="post-icons">
                             <li><a href="#"><i class="ion-heart"></i>57</a></li>
                             <li><a href="#"><i class="ion-chatbubble"></i>6</a></li>
-                            <li><a href="#"><i class="ion-eye"></i>138</a></li>
+                            <li><a href="#"><i class="ion-eye"></i>{{ $post->view_count }}</a></li>
                         </ul>
 
                         <ul class="icons">
@@ -81,19 +89,19 @@
                         </ul>
                     </div>
 
-                    <div class="post-footer post-info">
+                    <!-- <div class="post-footer post-info">
 
-                        <div class="left-area">
+                         <div class="left-area">
                             <a class="avatar" href="#"><img src="images/avatar-1-120x120.jpg" alt="Profile Image"></a>
-                        </div>
+                        </div> 
 
-                        <div class="middle-area">
+                          <div class="middle-area">
                             <a class="name" href="#"><b>Katy Liu</b></a>
                             <h6 class="date">on Sep 29, 2017 at 9:48 am</h6>
-                        </div>
+                        </div> 
 
-                    </div><!-- post-info -->
-
+                    </div>--><!-- post-info -->
+                
 
                 </div><!-- main-post -->
             </div><!-- col-lg-8 col-md-12 -->
@@ -102,19 +110,20 @@
 
                 <div class="single-post info-area">
 
-                    <div class="sidebar-area about-area">
+                    <!-- <div class="sidebar-area about-area">
                         <h4 class="title"><b>ABOUT BONA</b></h4>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                             ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur
                             Ut enim ad minim veniam</p>
-                    </div>
+                    </div> -->
 
                     <div class="sidebar-area subscribe-area">
 
                         <h4 class="title"><b>SUBSCRIBE</b></h4>
                         <div class="input-area">
-                            <form>
-                                <input class="email-input" type="text" placeholder="Enter your email">
+                            <form method="POST" action="{{ route('subscriber.store') }}">
+                                @csrf
+                                <input class="email-input" name="email" type="text" placeholder="Enter your email">
                                 <button class="submit-btn" type="submit"><i class="icon ion-ios-email-outline"></i></button>
                             </form>
                         </div>
@@ -125,14 +134,9 @@
 
                         <h4 class="title"><b>TAG CLOUD</b></h4>
                         <ul>
-                            <li><a href="#">Manual</a></li>
-                            <li><a href="#">Liberty</a></li>
-                            <li><a href="#">Recomendation</a></li>
-                            <li><a href="#">Interpritation</a></li>
-                            <li><a href="#">Manual</a></li>
-                            <li><a href="#">Liberty</a></li>
-                            <li><a href="#">Recomendation</a></li>
-                            <li><a href="#">Interpritation</a></li>
+                           @foreach($categories as $category)
+                                <li><a href="#">{{ $category->name }}</a></li>
+                           @endforeach
                         </ul>
 
                     </div><!-- subscribe-area -->
@@ -149,79 +153,58 @@
 
 <section class="recomended-area section">
     <div class="container">
-        <div class="row">
+        <div class="row"> 
 
-            <div class="col-lg-4 col-md-6">
-                <div class="card h-100">
-                    <div class="single-post post-style-1">
+            @foreach($randomposts as $post) 
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100">
+                        <div class="single-post post-style-1"> 
+                            <div class="blog-image"><img src="{{ Storage::disk('public')->url('post/'.$post->image) }}" alt="Blog Image"></div> 
+                            <a class="avatar" href="#"><img src="{{ Storage::disk('public')->url('profile/' . $post->user->image) }}" alt="Profile Image"></a> 
+                            <div class="blog-info"> 
+                                <h4 class="title"><a href="{{ route('post.details', $post->slug) }}"><b>{{ $post->title }}</b></a></h4> 
+                                <ul class="post-footer">
+                                   
+                                    <li> 
+                                        @guest
+                                            <a 
+                                                href="javascript:void(0);" 
+                                                onclick="
+                                                    Swal.fire({
+                                                            title: 'Login !',
+                                                            icon: 'info', 
+                                                            html:'to like post you need to login first',
+                                                            scrollbarPadding: false,
+                                                            // optional
+                                                            heightAuto: false, 
+                                                        })    
+                                                "
+                                            >
+                                                <i class="ion-heart"></i>{{ $post->favorite_to_user->count() }}
+                                            </a>
+                                        @else 
+                                            <a 
+                                                href="javascript:void(0);" 
+                                                onclick="document.getElementById('favorite-form-{{ $post->id }}').submit()"
+                                                class="{{ !Auth::user()->favorite_posts->where('pivot.post_id', $post->id)->count() == 0 ? 'favorite_posts' : '' }}"
+                                            >
+                                                <i class="ion-heart"></i>{{ $post->favorite_to_user->count() }}
+                                            </a>
 
-                        <div class="blog-image"><img src="images/alex-lambley-205711.jpg" alt="Blog Image"></div>
-
-                        <a class="avatar" href="#"><img src="images/icons8-team-355979.jpg" alt="Profile Image"></a>
-
-                        <div class="blog-info">
-
-                            <h4 class="title"><a href="#"><b>How Did Van Gogh's Turbulent Mind Depict One of the Most Complex
-                            Concepts in Physics?</b></a></h4>
-
-                            <ul class="post-footer">
-                                <li><a href="#"><i class="ion-heart"></i>57</a></li>
-                                <li><a href="#"><i class="ion-chatbubble"></i>6</a></li>
-                                <li><a href="#"><i class="ion-eye"></i>138</a></li>
-                            </ul>
-
-                        </div><!-- blog-info -->
-                    </div><!-- single-post -->
-                </div><!-- card -->
-            </div><!-- col-md-6 col-sm-12 -->
-
-            <div class="col-lg-4 col-md-6">
-                <div class="card h-100">
-                    <div class="single-post post-style-1">
-
-                        <div class="blog-image"><img src="images/caroline-veronez-165944.jpg" alt="Blog Image"></div>
-
-                        <a class="avatar" href="#"><img src="images/icons8-team-355979.jpg" alt="Profile Image"></a>
-
-                        <div class="blog-info">
-                            <h4 class="title"><a href="#"><b>How Did Van Gogh's Turbulent Mind Depict One of the Most Complex
-                                Concepts in Physics?</b></a></h4>
-
-                            <ul class="post-footer">
-                                <li><a href="#"><i class="ion-heart"></i>57</a></li>
-                                <li><a href="#"><i class="ion-chatbubble"></i>6</a></li>
-                                <li><a href="#"><i class="ion-eye"></i>138</a></li>
-                            </ul>
-                        </div><!-- blog-info -->
-
-                    </div><!-- single-post -->
-
-                </div><!-- card -->
-            </div><!-- col-md-6 col-sm-12 -->
-
-            <div class="col-lg-4 col-md-6">
-                <div class="card h-100">
-                    <div class="single-post post-style-1">
-
-                        <div class="blog-image"><img src="images/marion-michele-330691.jpg" alt="Blog Image"></div>
-
-                        <a class="avatar" href="#"><img src="images/icons8-team-355979.jpg" alt="Profile Image"></a>
-
-                        <div class="blog-info">
-                            <h4 class="title"><a href="#"><b>How Did Van Gogh's Turbulent Mind Depict One of the Most Complex
-                                Concepts in Physics?</b></a></h4>
-
-                            <ul class="post-footer">
-                                <li><a href="#"><i class="ion-heart"></i>57</a></li>
-                                <li><a href="#"><i class="ion-chatbubble"></i>6</a></li>
-                                <li><a href="#"><i class="ion-eye"></i>138</a></li>
-                            </ul>
-                        </div><!-- blog-info -->
-
-                    </div><!-- single-post -->
-
-                </div><!-- card -->
-            </div><!-- col-md-6 col-sm-12 -->
+                                            <form id="favorite-form-{{ $post->id }}" action="{{ route('post.favorite', $post->id) }}" method="POST" style="display: none;">
+                                                @csrf  
+                                            </form>
+                                        @endguest
+                                         
+                                    </li>
+                                    <li><a href="#"><i class="ion-chatbubble"></i>6</a></li>
+                                    <li><a href="#"><i class="ion-eye"></i>{{ $post->view_count }}</a></li>
+                                </ul> 
+                            </div><!-- blog-info -->
+                        </div><!-- single-post -->
+                    </div><!-- card -->
+                </div><!-- col-lg-4 col-md-6 --> 
+            @endforeach 
 
         </div><!-- row -->
 
@@ -355,6 +338,9 @@
 </section>
 @endsection
 
-
-@push('js') 
-@endpush 
+@push('js')   
+    <!-- jQuery Toast -->
+    <script src="{{ asset('plugins/js/jquery.toast.min.js') }}"></script> 
+    <!-- Sweetalert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+@endpush

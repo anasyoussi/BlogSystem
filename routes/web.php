@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController ;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\PostController as ViewPostController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Author\DashboardController as AuthorDashboardController;
@@ -27,7 +28,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::get('posts', [App\Http\Controllers\PostController::class, 'index'])->name('post.index'); 
+
 Route::post('subscriber', [App\Http\Controllers\SubscriberController::class, 'store'])->name('subscriber.store'); 
+
+Route::get('post/{slug}', [ViewPostController::class, 'details'])->name('post.details'); 
 
 Auth::routes(); 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
