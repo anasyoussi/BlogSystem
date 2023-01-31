@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Author;
 
+use App\Notifications\NewAuthorPost;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -85,8 +88,13 @@ class PostController extends Controller
         $post->is_approved = false;
         $post->save();
         
+        $users = User::where('role_id', 1)->get();
+        Notification::send($users, new NewAuthorPost($post)); 
+        
         $post->tags()->attach($request->tags); 
         $post->categories()->attach($request->categories); 
+
+
         
         return redirect()->route('author.post.index')->with('success', 'Post has been saved successfully!');   
     }

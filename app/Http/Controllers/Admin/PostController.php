@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Notifications\NewAuthorPost;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Subscriber;
 use App\Models\Tag;
+use App\Notifications\AuthorPostApproved;
+use App\Notifications\NewPostNotify;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -87,11 +92,17 @@ class PostController extends Controller
         }
         $post->is_approved = true;
         $post->save();
+
+        // $subscribers = Subscriber::all();
+
+        // foreach($subscribers as $subscriber){
+        //     Notification::route('mail', $subscriber->email)->notify(new NewPostNotify($post));       
+        // }
         
         $post->tags()->attach($request->tags); 
         $post->categories()->attach($request->categories); 
         
-        return redirect()->route('admin.post.index')->with('success', 'Post has been saved successfully!');   
+        return redirect()->route('admin.settings')->with('success', 'Post has been saved successfully!');   
     }
 
     /**
@@ -217,6 +228,7 @@ class PostController extends Controller
         if($post->is_approved == false){
             $post->is_approved = true; 
             $post->save(); 
+            $post->user->notify(new AuthorPostApproved($post)); 
             return redirect()->route('admin.post.index')->with('success', 'Post has been Approved Successfully!');   
         }else {
             return redirect()->route('admin.post.index')->with('info', 'Already Approved! ');   

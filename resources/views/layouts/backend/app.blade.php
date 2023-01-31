@@ -34,8 +34,7 @@
     <!-- jQuery Toast  -->
     <link rel="stylesheet" href="{{ asset('plugins/css/jquery.toast.min.css') }}">
 
-    <!-- jQuery Validate forms --> 
-    
+    <!-- jQuery Validate forms -->  
 
     <!-- Push css -->
     @stack('css')
@@ -93,12 +92,15 @@
         toastr.success("{{ session('success') }}")
     @endif
 
-    @if(Session::has('warning'))
-        toastr.warning("{{ session('warning') }}")
+    @if(Session::has('error'))
+        toastr.error("{{ session('error') }}")
     @endif
 
     <!-- Jquery Core Js -->
     <script src="{{ asset('assets/backend/plugins/jquery/jquery.min.js') }}"></script>
+
+    <!-- Validate Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script> 
 
     <!-- Bootstrap Core Js -->
     <script src="{{ asset('assets/backend/plugins/bootstrap/js/bootstrap.js') }}"></script>
@@ -150,5 +152,6 @@
 
     <!-- JS -->
     @stack('js')
+
 </body>
 </html>

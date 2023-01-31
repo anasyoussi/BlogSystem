@@ -3,8 +3,14 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController ;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Author\DashboardController as AuthorDashboardController;
+use App\Http\Controllers\Admin\SubscriberController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\Admin\FavoriteController as AdminFavoriteController;
+use App\Http\Controllers\Author\FavoriteController as AuthorFavoriteController; 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,26 +25,35 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home'); 
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::post('subscriber', [App\Http\Controllers\SubscriberController::class, 'store'])->name('subscriber.store'); 
 
 Auth::routes(); 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
+Route::group(['middleware' => ['auth']], function () {
+    Route::post('favorite/{post}/add', [FavoriteController::class, 'add'])->name('post.favorite'); 
+});
 
 // Admin Dashboard
 Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', 'admin']], function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('tag', TagController::class);
     Route::resource('category', CategoryController::class);
-    Route::resource('post', PostController::class);
-
+    Route::resource('post', PostController::class); 
+    // Profile Settings 
+    Route::get('settings', [SettingsController::class, 'index'])->name('settings'); 
+    Route::put('profile-update', [SettingsController::class, 'updateProfile'])->name('profile.updateProfile'); 
+    Route::put('password-update', [SettingsController::class, 'updatePassword'])->name('password.updatePassword');  
+    // Get Favorite 
+    Route::get('/favorite', [AdminFavoriteController::class, 'index'])->name('favorite.index');  
     // Post : Pending & approve posts.
     Route::get('/pending/post', [PostController::class, 'pending'])->name('post.pending');
-    Route::put('/post/{id}/approve',[PostController::class, 'approval'])->name('post.approve');  
+    Route::put('/post/{id}/approve',[PostController::class, 'approval'])->name('post.approve');   
+    // Subscribers
+    Route::get('/subscriber', [SubscriberController::class, 'index'])->name('subscriber.index'); 
+    Route::delete('/subscriber/{subscriber}', [SubscriberController::class, 'destroy'])->name('subscriber.destroy'); 
 });
 
 
@@ -49,4 +64,11 @@ Route::group(['prefix' => 'author', 'as'=>'author.', 'middleware'=>['auth', 'aut
     // Post : Pending & approve posts.
     Route::get('/pending/post', [App\Http\Controllers\Author\PostController::class, 'pending'])->name('post.pending');
     Route::put('/post/{id}/approve',[App\Http\Controllers\Author\PostController::class, 'approve'])->name('post.approve');  
+    // Profile Settings 
+    Route::get('settings', [App\Http\Controllers\Author\SettingsController::class, 'index'])->name('settings'); 
+    Route::put('profile-update', [App\Http\Controllers\Author\SettingsController::class, 'updateProfile'])->name('profile.updateProfile'); 
+    Route::put('password-update', [App\Http\Controllers\Author\SettingsController::class, 'updatePassword'])->name('password.updatePassword');
+     // Get Favorite 
+     Route::get('/favorite', [AuthorFavoriteController::class, 'index'])->name('favorite.index'); 
+ 
 });

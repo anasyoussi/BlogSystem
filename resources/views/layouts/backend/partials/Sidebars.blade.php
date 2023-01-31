@@ -66,6 +66,18 @@
                             <span>Pending Posts</span>
                         </a>
                     </li>
+                    <li class="{{ (request()->routeIs('admin.subscriber.index')) ? 'active' : '' }}">
+                        <a href="{{ route('admin.subscriber.index') }}">
+                            <i class="material-icons">email</i>
+                            <span>Subscribers</span>
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('admin.favorite') ? 'active' : '' }}">
+                        <a href="{{ route('admin.favorite.index') }}">
+                            <i class="material-icons">favorite</i>
+                            <span>Favorite Posts</span>  
+                        </a>
+                    </li> 
                     <li class="header">System</li>
                     <li class="{{ Request::is('admin.dashboard') ? 'active' : '' }}">
                         <a href="{{ route('logout') }}" onclick="event.preventDefault();  document.getElementById('logout-form').submit();">
@@ -76,6 +88,12 @@
                             </form> 
                         </a>
                     </li> 
+                    <li class="{{ Request::is('admin.settings') ? 'active' : '' }}">
+                        <a href="{{ route('admin.settings') }}">
+                            <i class="material-icons">settings</i>
+                            <span>Settings</span>  
+                        </a>
+                    </li>  
                 @endif 
 
 
@@ -92,6 +110,12 @@
                             <span>Posts</span>
                         </a>
                     </li>
+                    <li class="{{ Request::is('admin.favorite') ? 'active' : '' }}">
+                        <a href="{{ route('author.favorite.index') }}">
+                            <i class="material-icons">favorite</i>
+                            <span>Favorite Posts</span>  
+                        </a>
+                    </li> 
                     <li class="header">System</li> 
                     <li>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault();  document.getElementById('logout-form').submit();">
@@ -100,6 +124,12 @@
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                             </form> 
+                        </a>
+                    </li> 
+                    <li class="{{ Request::is('author.settings') ? 'active' : '' }}">
+                        <a href="{{ route('author.settings') }}">
+                            <i class="material-icons">settings</i>
+                            <span>Settings</span>  
                         </a>
                     </li> 
 

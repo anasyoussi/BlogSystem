@@ -57,7 +57,7 @@
                                     @foreach($posts as $post)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{ $loop->index + 1}}</td>
-                                            <td>{{ \Illuminate\Support\Str::limit($post->title, 20) }}</td> 
+                                            <td>{{ \Illuminate\Support\Str::limit($post->title, 15) }}</td> 
                                             <td>{{ $post->user->name }}</td>
                                             <td>{{ $post->view_count }}</td>
                                             <!-- -->

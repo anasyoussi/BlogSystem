@@ -10,10 +10,30 @@ $(document).ready(function(){
                 } 
                 reader.readAsDataURL(file);
             }
-        }); 
-
-
-
+        });   
         // post selection problem 
         $('div.dropdown-menu.open').css('margin-left', '0px'); 
+
+ 
+ 
 });
+
+
+$('#pwdVal').validate({
+    rules: {
+        old_password: {
+          required: true
+        },
+        password: {
+          required: true
+        },
+        password_confirmation: {
+          required: true, 
+          equalTo: '#password'
+        }
+    },
+    message: {
+
+    }
+
+});  
