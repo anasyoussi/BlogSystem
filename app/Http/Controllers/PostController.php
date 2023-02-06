@@ -8,21 +8,23 @@ use Illuminate\Support\Facades\Session;
 class PostController extends Controller
 {
 
-    public function getSingle(Post $post) {
+    // public function getSingle(Post $post) {
 
-        $randomposts = Post::take(3)->inRandomOrder()->get();
-        $postCount = $post->comments->count();
-        $postComments = $post->comments; 
+    //     $randomposts = Post::take(3)->inRandomOrder()->get();
+    //     $postCount = $post->comments->count();
+    //     $postComments = $post->comments ;
+
+    //     // return $post->comments;
          
     
-        $blogKey = 'blog_' . $post->id; 
-        if(!Session::has($blogKey))
-        {
-            $post->increment('view_count'); 
-            Session::put($blogKey, 1); 
-        } 
-        return view('post', compact('post','postCount','postComments', 'randomposts'));  
-    }
+    //     $blogKey = 'blog_' . $post->id; 
+    //     if(!Session::has($blogKey))
+    //     {
+    //         $post->increment('view_count'); 
+    //         Session::put($blogKey, 1); 
+    //     } 
+    //     return view('post', compact('post','postCount','postComments', 'randomposts'));  
+    // }
 
     public function index()
     {
@@ -33,8 +35,20 @@ class PostController extends Controller
 
     public function details($slug)
     {
-        $post = Post::find(22)->get();
-        dd(Post::find(22)->comments, Post::find(22)->comments->count()); 
+        $randomposts = Post::take(3)->inRandomOrder()->get();
+        $post = Post::where('slug', strtolower($slug))->first();
+        $comments = $post->latestComments; 
+
+        $commentCount = $post->comments->count();
+        // Post detail :
+        $postID = $post->id;
+        $postImage = $post->image;
+        $postTitle = $post->title;
+        $postBody = $post->body;
+        $postTags = $post->tags; 
+        $postCategories = $post->categories; 
+
+ 
 
         // Views: 
         $blogKey = 'blog_' . $post->id; 
@@ -43,6 +57,6 @@ class PostController extends Controller
             $post->increment('view_count'); 
             Session::put($blogKey, 1); 
         } 
-        return view('post', compact('post'));  
+        return view('post', compact('post', 'postID', 'postTitle', 'postBody', 'postTags', 'postCategories', 'postImage', 'randomposts', 'comments', 'commentCount'));  
     }
 }

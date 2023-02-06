@@ -18,33 +18,27 @@
             height: 400px;
             width: 100%;
             background-size: cover;
-            background-image: url('{{ Storage::disk("public")->url("post/".$post->image) }}'); 
+            background-image: url('{{ Storage::disk("public")->url("post/".$postImage) }}'); 
         } 
     </style>
-@endpush  
+@endpush   
  
 
 @section('content')  
 
 <div class="slider header-bg">
     <div class="display-table center-text">
-        <h1 class="title display-table-cell"><b> {{  $post->title   }}</b></h1>
+        <h1 class="title display-table-cell"><b> {{ $postTitle }}</b></h1>
     </div>
 </div> 
 
 <section class="post-area section">
-    <div class="container"> 
-
-        <div class="row">
-
-            <div class="col-lg-8 col-md-12 no-right-padding">
-
-                <div class="main-post">
-
-                    <div class="blog-post-inner">
-
-                        <div class="post-info">
-
+    <div class="container">  
+        <div class="row"> 
+            <div class="col-lg-8 col-md-12 no-right-padding"> 
+                <div class="main-post"> 
+                    <div class="blog-post-inner"> 
+                        <div class="post-info"> 
                             <div class="left-area">
                                 <a class="avatar" href="#"><img src="{{ Storage::disk('public')->url('profile/'. $post->user->image) }}" alt="Profile Image"></a>
                             </div>
@@ -66,10 +60,10 @@
 
                         <div class="post-image"><img src="{{ Storage::disk('public')->url('post/'.$post->image) }}" alt="Blog Image"></div>
 
-                        <p class="para">{!! html_entity_decode($post->body) !!}</p>
+                        <p class="para">{!! html_entity_decode($postBody) !!}</p>
 
                         <ul class="tags"> 
-                            @foreach($post->tags as $tag) 
+                            @foreach($postTags as $tag) 
                                 <li><a href="#">{{ $tag->name }}</a></li>
                             @endforeach
                         </ul>
@@ -135,7 +129,7 @@
 
                         <h4 class="title"><b>TAG CLOUD</b></h4>
                         <ul>
-                           @foreach($post->categories as $category)
+                           @foreach($postCategories as $category)
                                 <li><a href="#">{{ $category->name }}</a></li>
                            @endforeach
                         </ul>
@@ -222,8 +216,9 @@
                         <a href="{{ route('login') }}"><b>Login</b></a> first to add comment
                     </p>
                     @else 
-                    <form action="{{ route('comment.store', $post->id) }}" method="post" >
+                    <form action="{{ route('comment.store', $postID) }}" method="post" >
                         @csrf
+                        @method('post')
                         <div class="row">  
                             <div class="col-sm-12">
                                 <textarea name="comment" rows="2" class="text-area-messge form-control" placeholder="Enter your comment" aria-required="true" aria-invalid="false"></textarea>
@@ -236,9 +231,9 @@
                     @endguest
                 </div><!-- comment-form -->
 
-                <h4><b>COMMENTS ({{ $postCount }})</b></h4>
-                @if($postCount > 0)
-                    @foreach($postComments as $comment)
+                <h4><b>COMMENTS ({{ $commentCount }})</b></h4>
+                @if($commentCount > 0)
+                    @foreach($comments as $comment)
                     <div class="commnets-area ">
 
                         <div class="comment">

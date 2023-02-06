@@ -14,13 +14,13 @@ class CommentController extends Controller
         return view('admin.comments', compact('comments')); 
     } 
 
-    public function store(Request $request, $post)
+    public function store(Request $request, $postID)
     { 
         $this->validate($request, [
             'comment' => 'required'
         ]); 
         $comment = new Comment();
-        $comment->post_id = $post;
+        $comment->post_id = $postID;
         $comment->user_id = Auth::id();
         $comment->comment = $request->comment;
         $comment->save();

@@ -10,10 +10,10 @@ class Post extends Model
     use HasFactory;
  
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
+    // public function getRouteKeyName()
+    // {
+    //     return 'slug';
+    // }
 
     public function user()
     {
@@ -38,5 +38,10 @@ class Post extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class); 
+    }
+
+    public function latestComments()
+    {
+        return $this->hasMany(Comment::class)->latest(); 
     }
 }

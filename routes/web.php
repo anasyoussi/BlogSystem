@@ -33,7 +33,7 @@ Route::get('posts', [App\Http\Controllers\PostController::class, 'index'])->name
 
 Route::post('subscriber', [App\Http\Controllers\SubscriberController::class, 'store'])->name('subscriber.store'); 
 
-Route::get('post/{post:slug}', [ViewPostController::class, 'getSingle'])->name('post.details'); 
+Route::get('post/{slug}', [ViewPostController::class, 'details'])->name('post.details'); 
 
 Auth::routes(); 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

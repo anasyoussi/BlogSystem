@@ -102,7 +102,7 @@ class PostController extends Controller
         $post->tags()->attach($request->tags); 
         $post->categories()->attach($request->categories); 
         
-        return redirect()->route('admin.settings')->with('success', 'Post has been saved successfully!');   
+        return response()->back()->with('success', 'Post has been saved successfully!');   
     }
 
     /**
