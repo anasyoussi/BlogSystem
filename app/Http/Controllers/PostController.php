@@ -1,14 +1,29 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Category;
-use App\Models\Post;
-use Illuminate\Http\Request;
+ 
+use App\Models\Post; 
 use Illuminate\Support\Facades\Session;
 
 class PostController extends Controller
 {
+
+    public function getSingle(Post $post) {
+
+        $randomposts = Post::take(3)->inRandomOrder()->get();
+        $postCount = $post->comments->count();
+        $postComments = $post->comments; 
+         
+    
+        $blogKey = 'blog_' . $post->id; 
+        if(!Session::has($blogKey))
+        {
+            $post->increment('view_count'); 
+            Session::put($blogKey, 1); 
+        } 
+        return view('post', compact('post','postCount','postComments', 'randomposts'));  
+    }
+
     public function index()
     {
         $posts = Post::latest()->paginate(6);
@@ -18,13 +33,8 @@ class PostController extends Controller
 
     public function details($slug)
     {
-        $post = Post::where('slug', $slug)->first();
-        $categories = Category::all(); 
-        $postCatName = $post->categories[0]->name;
-        $postCatImg = $post->categories[0]->image;
-        $postTags = $post->tags; 
-        $randomposts = Post::all()->random(3);
-
+        $post = Post::find(22)->get();
+        dd(Post::find(22)->comments, Post::find(22)->comments->count()); 
 
         // Views: 
         $blogKey = 'blog_' . $post->id; 
@@ -32,8 +42,7 @@ class PostController extends Controller
         {
             $post->increment('view_count'); 
             Session::put($blogKey, 1); 
-        }
-
-        return view('post', compact('post', 'randomposts', 'postCatName', 'postCatImg', 'postTags', 'categories'));  
+        } 
+        return view('post', compact('post'));  
     }
 }

@@ -10,7 +10,8 @@ use App\Http\Controllers\Author\DashboardController as AuthorDashboardController
 use App\Http\Controllers\Admin\SubscriberController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\Admin\FavoriteController as AdminFavoriteController;
-use App\Http\Controllers\Author\FavoriteController as AuthorFavoriteController; 
+use App\Http\Controllers\Author\FavoriteController as AuthorFavoriteController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -32,13 +33,14 @@ Route::get('posts', [App\Http\Controllers\PostController::class, 'index'])->name
 
 Route::post('subscriber', [App\Http\Controllers\SubscriberController::class, 'store'])->name('subscriber.store'); 
 
-Route::get('post/{slug}', [ViewPostController::class, 'details'])->name('post.details'); 
+Route::get('post/{post:slug}', [ViewPostController::class, 'getSingle'])->name('post.details'); 
 
 Auth::routes(); 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::post('favorite/{post}/add', [FavoriteController::class, 'add'])->name('post.favorite'); 
+    Route::post('favorite/{post}/add', [FavoriteController::class, 'add'])->name('post.favorite');
+    Route::post('comment/{post}', [CommentController::class, 'store'])->name('comment.store');
 });
 
 // Admin Dashboard
@@ -59,6 +61,9 @@ Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', '
     // Subscribers
     Route::get('/subscriber', [SubscriberController::class, 'index'])->name('subscriber.index'); 
     Route::delete('/subscriber/{subscriber}', [SubscriberController::class, 'destroy'])->name('subscriber.destroy'); 
+    // Get Comments 
+    Route::get('comments', [CommentController::class, 'index'])->name('comment.index');
+    Route::delete('comments/{id}', [CommentController::class, 'destroy'])->name('comment.destroy');
 });
 
 
@@ -73,7 +78,9 @@ Route::group(['prefix' => 'author', 'as'=>'author.', 'middleware'=>['auth', 'aut
     Route::get('settings', [App\Http\Controllers\Author\SettingsController::class, 'index'])->name('settings'); 
     Route::put('profile-update', [App\Http\Controllers\Author\SettingsController::class, 'updateProfile'])->name('profile.updateProfile'); 
     Route::put('password-update', [App\Http\Controllers\Author\SettingsController::class, 'updatePassword'])->name('password.updatePassword');
-     // Get Favorite 
-     Route::get('/favorite', [AuthorFavoriteController::class, 'index'])->name('favorite.index'); 
- 
+    // Get Favorite 
+     Route::get('/favorite', [AuthorFavoriteController::class, 'index'])->name('favorite.index');  
+    // Get Comments 
+    Route::get('comments', [App\Http\Controllers\Author\CommentController::class, 'index'])->name('comment.index');
+    Route::delete('comments/{id}', [App\Http\Controllers\Author\CommentController::class, 'destroy'])->name('comment.destroy');
 });

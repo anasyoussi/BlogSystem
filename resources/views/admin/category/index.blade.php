@@ -66,7 +66,7 @@
                                                     <i class="material-icons">delete</i>
                                                 </button>
 
-                                                <form id="delete-form-{{ $category->id }}" method="post" action="{{ route('admin.category.destroy', $category->id) }}" sqtyle="display: none;">
+                                                <form id="delete-form-{{ $category->id }}" method="post" action="{{ route('admin.category.destroy', $category->id) }}" style="display: none;">
                                                     @csrf 
                                                     @method('delete')
                                                 </form>
@@ -100,9 +100,7 @@
     <script src="{{ asset('assets/backend/plugins/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/backend/plugins/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
     <script type="text/javascript">
-        function deleteCategory(id){
-        
-
+        function deleteCategory(id){ 
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -116,9 +114,7 @@
                     event.preventDefault(); 
                     document.getElementById('delete-form-'+id).submit(); 
                 }
-            })
-
-
+            }) 
         }
     </script>
 

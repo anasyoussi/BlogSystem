@@ -209,8 +209,8 @@ class PostController extends Controller
             Storage::disk('public')->delete('post/'.$post->image);
         }
         
-        $post->categories->detach();
-        $post->tags->detach(); 
+        $post->categories()->detach();
+        $post->tags()->detach(); 
 
         $post->delete();
         return redirect()->route('admin.post.index')->with('success', 'Post has been Deleted Successfully!');   

@@ -16,11 +16,7 @@
                 @else   
                     <li><a href="{{ route('author.dashboard') }}">{{ Auth::user()->name }}</a></li>
                 @endif
-            @endguest
-
-
-
-            
+            @endguest  
         </ul><!-- main-menu -->
 
         <div class="src-area">
