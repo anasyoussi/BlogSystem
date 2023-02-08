@@ -24,6 +24,11 @@
                     <div class="footer-section">
                     <h4 class="title"><b>CATAGORIES</b></h4>
                     <ul>
+                        <!--  foreach($categories as $cat)
+                            <li><a href="  route('category.posts', $cat->slug)  ">  $cat->name  </a></li>
+                         endforeach -->
+                    </ul>
+                    <ul>
                         <li><a href="#">BEAUTY</a></li>
                         <li><a href="#">HEALTH</a></li>
                         <li><a href="#">MUSIC</a></li>

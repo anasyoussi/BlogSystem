@@ -13,8 +13,11 @@ use App\Http\Controllers\Admin\FavoriteController as AdminFavoriteController;
 use App\Http\Controllers\Author\FavoriteController as AuthorFavoriteController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SearchController;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +36,14 @@ Route::get('posts', [App\Http\Controllers\PostController::class, 'index'])->name
 
 Route::post('subscriber', [App\Http\Controllers\SubscriberController::class, 'store'])->name('subscriber.store'); 
 
-Route::get('post/{slug}', [ViewPostController::class, 'details'])->name('post.details'); 
+Route::get('post/{slug}', [ViewPostController::class, 'details'])->name('post.details');
+
+Route::get('/category/{slug}', [ViewPostController::class, 'postByCategory'])->name('category.posts');
+
+Route::get('/tag/{slug}', [ViewPostController::class, 'postByTag'])->name('tag.posts');
+
+Route::get('/search', [SearchController::class, 'search'])->name('search'); 
+
 
 Auth::routes(); 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -84,3 +94,8 @@ Route::group(['prefix' => 'author', 'as'=>'author.', 'middleware'=>['auth', 'aut
     Route::get('comments', [App\Http\Controllers\Author\CommentController::class, 'index'])->name('comment.index');
     Route::delete('comments/{id}', [App\Http\Controllers\Author\CommentController::class, 'destroy'])->name('comment.destroy');
 });
+
+// View::composer('layouts.frontend.partials.footer', function($view){
+//     $categories = Category::all(); 
+//     $view->with('categories',$categories);
+// }); 

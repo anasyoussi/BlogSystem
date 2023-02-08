@@ -1,5 +1,5 @@
 @extends('layouts.frontend.app') 
-@section('title', 'Welcome to my ./Blog') 
+@section('title', 'Tags') 
 @push('css')
     <link href="{{ asset('assets/frontend/layout-1/css/styles.css') }}" rel="stylesheet"> 
     <link href="{{ asset('assets/frontend/layout-1/css/responsive.css') }}" rel="stylesheet">
@@ -7,47 +7,21 @@
     <link href="{{ asset('assets/front-page-category/css/responsive.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/front-page-category/css/styles.css') }}" rel="stylesheet">
     <!-- jQuery Toast  -->
-    <link rel="stylesheet" href="{{ asset('plugins/css/jquery.toast.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/css/jquery.toast.min.css') }}"> 
+
     <style>
-        .favorite_posts{
-            color: blueviolet;
-        }
+         .header-bg h1{
+            color: white;
+            text-transform: capitalize;
+         }
     </style>
 @endpush 
-@section('content')
-<div class="main-slider">
-    <div class="swiper-container position-static" data-slide-effect="slide" data-autoheight="false"
-        data-swiper-speed="500" data-swiper-autoplay="10000" data-swiper-margin="0" data-swiper-slides-per-view="4"
-        data-swiper-breakpoints="true" data-swiper-loop="true" >
-        <div class="swiper-wrapper">
- 
-            <!-- Start Swiper -->
-            @forelse($categories as $category)
-                <div class="swiper-slide">
-                    <a class="slider-category" href="{{ route('category.posts', $category->slug) }}">
-                        <div class="blog-image"><img src="{{ Storage::disk('public')->url('category/slider/'.$category->image) }}" alt="{{ $category->name }}"></div> 
-                        <div class="category">
-                            <div class="display-table center-text">
-                                <div class="display-table-cell">
-                                    <h3><b>{{ $category->name }}</b></h3>
-                                </div>
-                            </div>
-                        </div> 
-                    </a>
-                </div><!-- swiper-slide -->
-            @empty
-                <div class="swiper-slide">
-                    <strong>No Data Found :(</strong>
-                </div><!-- swiper-slide -->
-            @endforelse
-            <!-- End Swiper -->  
-
-
-        </div><!-- swiper-wrapper -->
-
-    </div><!-- swiper-container -->
-
-</div><!-- slider -->
+@section('content') 
+<div class="slider header-bg">
+    <div class="display-table center-text">
+        <h1 class="title display-table-cell"><b>{{ $tag->name }}</b></h1>
+    </div>
+</div> <!-- slider -->
 
 <section class="blog-area section">
     <div class="container">
@@ -108,9 +82,7 @@
         </div><!-- row --> 
         <a class="load-more-btn" href="#"><b>LOAD MORE</b></a> 
     </div><!-- container -->
-</section><!-- section -->
-
-
+</section><!-- section --> 
 @endsection 
 
 
@@ -120,4 +92,3 @@
     <!-- Sweetalert -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 @endpush
-

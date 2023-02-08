@@ -18,7 +18,7 @@
             height: 400px;
             width: 100%;
             background-size: cover;
-            background-image: url('{{ Storage::disk("public")->url("post/".$postImage) }}'); 
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),  url('{{ Storage::disk("public")->url("post/".$postImage) }}'); 
         } 
     </style>
 @endpush   
@@ -64,7 +64,7 @@
 
                         <ul class="tags"> 
                             @foreach($postTags as $tag) 
-                                <li><a href="#">{{ $tag->name }}</a></li>
+                                <li><a href="{{ route('tag.posts', $tag->slug) }}">{{ $tag->name }}</a></li>
                             @endforeach
                         </ul>
                     </div><!-- blog-post-inner -->
@@ -128,9 +128,9 @@
                     <div class="tag-area">
 
                         <h4 class="title"><b>TAG CLOUD</b></h4>
-                        <ul>
+                        <ul> 
                            @foreach($postCategories as $category)
-                                <li><a href="#">{{ $category->name }}</a></li>
+                                <li><a href="">{{ $category->name }}</a></li>
                            @endforeach
                         </ul>
 
