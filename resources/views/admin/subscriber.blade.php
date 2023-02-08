@@ -43,7 +43,7 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach($subscribers as $key=>$subscriber)
+                                    @forelse($subscribers as $key=>$subscriber)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $subscriber->email }}</td>
@@ -59,7 +59,11 @@
                                                 </form>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty 
+                                        <tr class="text-center">
+                                            <td colspan="5">No data available in table</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

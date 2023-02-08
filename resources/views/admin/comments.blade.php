@@ -1,13 +1,11 @@
 @extends('layouts.backend.app')
- 
-
+  
 @section('title',  'Comments')  
 
 @push('css')
     <!-- JQuery DataTable Css -->
     <link href="{{ asset('assets/backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
-@endpush
-
+@endpush 
 
 @section('content')
 <section class="content"> 
@@ -19,7 +17,7 @@
                     <div class="header">
                         <h2>
                             ALL COMMENTS
-                            <span class="badge bg-blue">{{ $comments->count() }}</span>
+                            <span class="badge bg-blue">{{ $commentCount }}</span>
                         </h2>
                     </div>
                     <div class="body">
@@ -40,7 +38,7 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach($comments as $key=>$comment)
+                                    @forelse($comments as $comment)
                                         <tr>
                                             <td>
                                                 <div class="media">
@@ -81,8 +79,14 @@
                                                     @method('delete')
                                                 </form>
                                             </td>
+                                        </tr> 
+                                    @empty 
+                                        <tr class="text-center">
+                                            <td colspan="3">
+                                                No data Found
+                                            </td>
                                         </tr>
-                                    @endforeach
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

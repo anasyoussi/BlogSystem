@@ -10,8 +10,10 @@ class CommentController extends Controller
 {
     public function index()
     {
-        $comments = Comment::latest()->get(); 
-        return view('admin.comments', compact('comments')); 
+        $comments = Comment::latest()->get();
+        // $comments = Comment::with('user')->latest()->get(); 
+        $commentCount = Comment::count(); 
+        return view('admin.comments', compact('comments', 'commentCount')); 
     } 
 
     public function store(Request $request, $postID)

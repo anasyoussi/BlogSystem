@@ -84,6 +84,12 @@
                             <span>Comments</span>  
                         </a>
                     </li> 
+                    <li class="{{ Request::is('admin.authors') ? 'active' : '' }}">
+                        <a href="{{ route('admin.authors') }}">
+                            <i class="material-icons">add_moderator</i>
+                            <span>Authors</span>  
+                        </a>
+                    </li> 
                     <li class="header">System</li>
                     <li class="{{ Request::is('admin.dashboard') ? 'active' : '' }}">
                         <a href="{{ route('logout') }}" onclick="event.preventDefault();  document.getElementById('logout-form').submit();">

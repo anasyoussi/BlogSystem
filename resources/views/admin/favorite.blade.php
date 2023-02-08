@@ -45,7 +45,7 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach($posts as $post) 
+                                    @forelse($posts as $post) 
                                         <tr>
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ \Illuminate\Support\Str::limit($post->title, 20) }}</td>
@@ -66,7 +66,11 @@
                                                 </form>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty 
+                                        <tr class="text-center">
+                                            <td colspan="6">No data available in table</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

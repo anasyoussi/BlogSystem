@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AuthorController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController ;
 use App\Http\Controllers\Admin\PostController;
@@ -74,6 +75,10 @@ Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', '
     // Get Comments 
     Route::get('comments', [CommentController::class, 'index'])->name('comment.index');
     Route::delete('comments/{id}', [CommentController::class, 'destroy'])->name('comment.destroy');
+    // Authors 
+    Route::get('authors', [AuthorController::class, 'index'])->name('authors');
+    Route::delete('authors/{id}', [AuthorController::class, 'destroy'])->name('authors.destroy');
+
 });
 
 
