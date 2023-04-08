@@ -40,11 +40,25 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        if(Auth::check() && Auth::user()->role->id == 1)
-        {
+        // if(Auth::check() && Auth::user()->role->id == 1)
+        // {
+        //     $this->redirectTo = route('admin.dashboard');
+
+        // }elseif(Auth::check() && Auth::user()->role->id == 2){
+
+        //     $this->redirectTo = route('author.dashboard');
+
+        // }elseif(Auth::check() && Auth::user()->role->id == 3){
+
+        //     $this->redirectTo = route('user.dashboard');
+        // }
+
+        if(Auth::check() && Auth::user()->role->id == 1) {
             $this->redirectTo = route('admin.dashboard');
-        }else{
+        }elseif (Auth::check() && Auth::user()->role->id == 2) {
             $this->redirectTo = route('author.dashboard');
+        }else{
+            $this->redirectTo = route('user.dashboard');
         }
         
         $this->middleware('guest');
@@ -57,9 +71,10 @@ class RegisterController extends Controller
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
-    {
+    { 
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -72,11 +87,21 @@ class RegisterController extends Controller
      * @return \App\Models\User
      */
     protected function create(array $data)
-    {
+    { 
         return User::create([
             'name' => $data['name'],
+            'username' => $data['username'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+        // ->role()->attach(3)
+        
+        // $user = new User(); 
+        // $user->name = $data['name']; 
+        // $user->username = $data['username'];
+        // $user->email = $data['email']; 
+        // $user->password = Hash::make($data['password']);
+
+        // $user->role->attach(1);
     }
 }

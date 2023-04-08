@@ -23,5 +23,9 @@ class RolesTableSeeder extends Seeder
             'name' => 'Author',
             'slug' => 'author',
         ]);
+        \App\Models\Role::create([
+            'name' => 'User',
+            'slug' => 'user',
+        ]);
     }
 }

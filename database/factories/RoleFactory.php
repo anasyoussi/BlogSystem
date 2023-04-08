@@ -24,6 +24,10 @@ class RoleFactory extends Factory
             [
                 'name' => 'Author',
                 'slug' => 'author',
+            ], 
+            [
+                'name' => 'User',
+                'slug' => 'user',
             ]
         ];
     }

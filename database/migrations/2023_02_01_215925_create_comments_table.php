@@ -23,9 +23,9 @@ return new class extends Migration
                 ->references('id')->on('posts')
                 ->onDelete('cascade');
 
-            $table->foreign('post_id')
-                ->references('id')
-                ->onDelete('cascade'); 
+            // $table->foreign('post_id')
+            //     ->references('id')
+            //     ->onDelete('cascade'); 
 
             $table->timestamps();
         });

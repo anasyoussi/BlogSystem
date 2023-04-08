@@ -40,8 +40,10 @@ class LoginController extends Controller
         if(Auth::check() && Auth::user()->role->id == 1)
         {
             $this->redirectTo = route('admin.dashboard');
-        }else{
+        }elseif (Auth::check() && Auth::user()->role->id == 2) {
             $this->redirectTo = route('author.dashboard');
+        }elseif (Auth::check() && Auth::user()->role->id == 3){
+            $this->redirectTo = route('user.dashboard');
         }
 
         

@@ -82,7 +82,7 @@ class PostController extends Controller
         $post = new Post(); 
         $post->user_id = Auth::id();
         $post->title = $request->title;
-        $post->slug = $slug;
+        $post->slug = $slug . '-' . rand(1000, 9999);
         $post->image = $imageName;
         $post->body = $request->editor1; 
         if(isset($request->status)){
@@ -102,7 +102,8 @@ class PostController extends Controller
         $post->tags()->attach($request->tags); 
         $post->categories()->attach($request->categories); 
         
-        return response()->back()->with('success', 'Post has been saved successfully!');   
+        // return response()->back()->with('success', 'Post has been saved successfully!');   
+         return redirect()->route('admin.post.index')->with('success', 'Post has been saved successfully!'); 
     }
 
     /**
@@ -166,9 +167,7 @@ class PostController extends Controller
             }
 
             $postImage = Image::make($image)->resize(1600, 1066)->stream();
-            Storage::disk('public')->put('post/' . $imageName, $postImage); 
-
-            
+            Storage::disk('public')->put('post/' . $imageName, $postImage);  
 
         } else {
             $imageName = $post->image; 

@@ -10,11 +10,14 @@
             <li><a href="{{ route('post.index') }}">Latest Posts</a></li> 
             @guest 
             <li><a href="{{ route('login') }}"> Login </a></li> 
+            <li><a href="{{ route('register') }}"> Register </a></li> 
             @else 
                 @if(Auth::user()->role->id == 1)
-                <li><a href="{{ route('admin.dashboard') }}"> {{ Auth::user()->name }} </a></li>
-                @else   
-                    <li><a href="{{ route('author.dashboard') }}">{{ Auth::user()->name }}</a></li>
+                <li><a href="{{ route('admin.dashboard') }}"> Dashboard({{ Auth::user()->name }}) </a></li>
+                @elseif(Auth::user()->role->id == 2)   
+                    <li><a href="{{ route('author.dashboard') }}">Dashboard({{ Auth::user()->name }})</a></li>
+                @elseif(Auth::user()->role->id == 3)   
+                    <li><a href="{{ route('user.dashboard') }}">Dashboard({{ Auth::user()->name }})</a></li>
                 @endif
             @endguest  
         </ul><!-- main-menu -->

@@ -152,6 +152,45 @@
                     </li> 
 
                 @endif 
+
+
+                @if(Request::is('user*'))
+                    <li class="{{ Request::is('user.dashboard') ? 'active' : '' }}">
+                        <a href="{{ route('user.dashboard') }}">
+                            <i class="material-icons">home</i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('user.favorite') ? 'active' : '' }}">
+                        <a href="{{ route('user.favorite.index') }}">
+                            <i class="material-icons">favorite</i>
+                            <span>Favorite Posts</span>  
+                        </a>
+                    </li>  
+                    <li class="{{ Request::is('user.comment') ? 'active' : '' }}">
+                        <a href="{{ route('user.comment.index') }}">
+                            <i class="material-icons">comment</i>
+                            <span>Comments</span>  
+                        </a>
+                    </li>  
+                    <li class="header">System</li> 
+                    <li>
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault();  document.getElementById('logout-form').submit();">
+                            <i class="material-icons">logout</i>
+                            <span>LogOut</span> 
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                            </form> 
+                        </a>
+                    </li> 
+                    <li class="{{ Request::is('user.settings') ? 'active' : '' }}">
+                        <a href="{{ route('user.settings') }}">
+                            <i class="material-icons">settings</i>
+                            <span>Settings</span>  
+                        </a>
+                    </li> 
+
+                @endif 
                  
             </ul>
         </div>

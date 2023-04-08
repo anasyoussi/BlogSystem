@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\SubscriberController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\Admin\FavoriteController as AdminFavoriteController;
 use App\Http\Controllers\Author\FavoriteController as AuthorFavoriteController;
+use App\Http\Controllers\User\FavoriteController as UserFavoriteController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
@@ -104,3 +105,18 @@ Route::group(['prefix' => 'author', 'as'=>'author.', 'middleware'=>['auth', 'aut
 //     $categories = Category::all(); 
 //     $view->with('categories',$categories);
 // }); 
+
+
+// User Dashboard
+Route::group(['prefix' => 'user', 'as'=>'user.', 'middleware'=>['auth', 'user'] ], function () {
+    Route::get('dashboard', [AuthorDashboardController::class, 'index'])->name('dashboard');  
+    // Profile Settings 
+    Route::get('settings', [App\Http\Controllers\User\SettingsController::class, 'index'])->name('settings'); 
+    Route::put('profile-update', [App\Http\Controllers\User\SettingsController::class, 'updateProfile'])->name('profile.updateProfile'); 
+    Route::put('password-update', [App\Http\Controllers\User\SettingsController::class, 'updatePassword'])->name('password.updatePassword');
+    // Get Favorite 
+     Route::get('/favorite', [UserFavoriteController::class, 'index'])->name('favorite.index');  
+    // Get Comments 
+    Route::get('comments', [App\Http\Controllers\User\CommentController::class, 'index'])->name('comment.index');
+    Route::delete('comments/{id}', [App\Http\Controllers\User\CommentController::class, 'destroy'])->name('comment.destroy');
+});

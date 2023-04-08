@@ -4,7 +4,15 @@
         <div class="navbar-header">
             <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
             <a href="javascript:void(0);" class="bars"></a>
-            <a class="navbar-brand" href="{{ route('admin.dashboard') }}">Admin Panel</a>
+            <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
+                @if (auth()->user()->role->name == "Admin")
+                    Admin Panel
+                @elseif (auth()->user()->role->name == "Author")
+                    Author Panel
+                @else 
+                    User 
+                @endif 
+            </a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
