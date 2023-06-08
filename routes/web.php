@@ -32,6 +32,12 @@ use Illuminate\Support\Facades\View;
 |
 */
 
+Route::get('/storage-link', function(){
+    $targetFolder = storage_path('app/public');
+    $linkFolder = $_SERVER['DOCUMENT_ROOT'] . '/storage';
+    symlink($targetFolder, $linkFolder);
+});
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('posts', [App\Http\Controllers\PostController::class, 'index'])->name('post.index'); 
