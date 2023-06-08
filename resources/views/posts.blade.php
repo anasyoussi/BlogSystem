@@ -1,5 +1,5 @@
 @extends('layouts.frontend.app')
-
+ 
 @section('title','Posts')
 
 @push('css')
@@ -9,6 +9,10 @@
         .favorite_posts{
             color: blue;
         }
+        .isDisabled, isDisabled:active, isDisabled:hover{ 
+            cursor: default;  
+        }
+
     </style>
 @endpush
 
@@ -22,6 +26,7 @@
 
             <div class="row">
                 @forelse($posts as $post)
+                
                     <div class="col-lg-4 col-md-6">
                         <div class="card h-100">
                             <div class="single-post post-style-1">
@@ -38,10 +43,21 @@
 
                                         <li>
                                             @guest
-                                                <a href="javascript:void(0);" onclick="toastr.info('To add favorite list. You need to login first.','Info',{
-                                                    closeButton: true,
-                                                    progressBar: true,
-                                                })"><i class="ion-heart"></i>{{ $post->favorite_to_users->count() }}</a>
+                                                <a 
+                                                href="javascript:void(0);" 
+                                                onclick="
+                                                    Swal.fire({
+                                                            title: 'Login !',
+                                                            icon: 'info', 
+                                                            html:'to like post you need to login first',
+                                                            scrollbarPadding: false,
+                                                            // optional
+                                                            heightAuto: false, 
+                                                        })    
+                                                "
+                                                >
+                                                <i class="ion-heart"></i>{{ $post->favorite_to_user->count() }}
+                                                </a>
                                             @else
                                                 <a href="javascript:void(0);" onclick="document.getElementById('favorite-form-{{ $post->id }}').submit();"
                                                    class="{{ !Auth::user()->favorite_posts->where('pivot.post_id', $post->id)->count() == 0 ? 'favorite_posts' : '' }}">
@@ -53,8 +69,8 @@
                                             @endguest
 
                                         </li>
-                                        <li><a href="#"><i class="ion-chatbubble"></i>12</a></li>
-                                        <li><a href="#"><i class="ion-eye"></i>{{ $post->view_count }}</a></li>
+                                        <li><a href="" class="isDisabled"><i class="ion-chatbubble"></i>{{ $post->comments->count() }}</a></li>
+                                        <li><a href="" ><i class="ion-eye"></i>{{ $post->view_count }}</a></li>
                                     </ul>
 
                                 </div><!-- blog-info -->
@@ -80,5 +96,8 @@
 @endsection
 
 @push('js')
-
+ <!-- jQuery Toast -->
+ <script src="{{ asset('plugins/js/jquery.toast.min.js') }}"></script> 
+ <!-- Sweetalert -->
+ <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 @endpush

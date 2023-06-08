@@ -16,7 +16,7 @@
 
 	<link href="{{ asset('assets/frontend/css/swiper.css') }}" rel="stylesheet"> 
 
-	<link href="{{ asset('assets/frontend/css/ionicons.css') }}" rel="stylesheet">   
+	<link href="{{ asset('assets/frontend/css/ionicons.css') }}" rel="stylesheet">    
    
 
     @stack('css')

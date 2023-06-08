@@ -1,5 +1,5 @@
 <header>
-    <div class="container-fluid position-relative no-side-padding">
+    <div class="container-fluid position-relative no-side-padding"> 
 
         <a href="#" class="logo">./Blog</a>
 

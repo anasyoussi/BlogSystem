@@ -38,10 +38,22 @@
 
                                         <li>
                                             @guest
-                                                <a href="javascript:void(0);" onclick="toastr.info('To add favorite list. You need to login first.','Info',{
-                                                    closeButton: true,
-                                                    progressBar: true,
-                                                })"><i class="ion-heart"></i>{{ $post->favorite_to_users->count() }}</a>
+                                            <a 
+                                            href="javascript:void(0);"  
+                                            
+                                            onclick="
+                                                Swal.fire({
+                                                        title: 'Login !',
+                                                        icon: 'info', 
+                                                        html:'to like post you need to login first',
+                                                        scrollbarPadding: false,
+                                                        // optional
+                                                        heightAuto: false, 
+                                                    })    
+                                            "
+                                            >
+                                            <i class="ion-heart"></i>{{ $post->favorite_to_user->count() }}
+                                            </a>
                                             @else
                                                 <a href="javascript:void(0);" onclick="document.getElementById('favorite-form-{{ $post->id }}').submit();"
                                                    class="{{ !Auth::user()->favorite_posts->where('pivot.post_id', $post->id)->count() == 0 ? 'favorite_posts' : '' }}">
@@ -80,5 +92,8 @@
 @endsection
 
 @push('js')
-
+ <!-- jQuery Toast -->
+ <script src="{{ asset('plugins/js/jquery.toast.min.js') }}"></script> 
+ <!-- Sweetalert -->
+ <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 @endpush
